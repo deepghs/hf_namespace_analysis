@@ -36,7 +36,7 @@ def run(author: str, repository: Optional[str] = None, analysis_private: bool = 
     repository = repository or f'{author}/storage_analysis'
     if not hf_client.repo_exists(repo_id=repository, repo_type='dataset'):
         hf_client.create_repo(repo_id=repository, repo_type='dataset', private=analysis_private)
-    if analysis_private and not hf_client.repo_info(repo_id=repository, repo_type='dataset').private:
+    if bool(analysis_private) != bool(hf_client.repo_info(repo_id=repository, repo_type='dataset').private):
         hf_client.update_repo_settings(private=analysis_private)
 
     df = hf_hub_scan_for_author(author, analysis_private=analysis_private)
