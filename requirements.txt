@@ -5,3 +5,4 @@ tabulate
 matplotlib
 click>=8.0.0
 pyarrow
+hbutils>=0.10
