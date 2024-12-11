@@ -35,7 +35,9 @@ def run(author: str, repository: Optional[str] = None, analysis_private: bool = 
     hf_client = get_hf_client()
     repository = repository or f'{author}/storage_analysis'
     if not hf_client.repo_exists(repo_id=repository, repo_type='dataset'):
-        hf_client.create_repo(repo_id=repository, repo_type='dataset')
+        hf_client.create_repo(repo_id=repository, repo_type='dataset', private=analysis_private)
+    if analysis_private and not hf_client.repo_info(repo_id=repository, repo_type='dataset').private:
+        hf_client.update_repo_settings(private=analysis_private)
 
     df = hf_hub_scan_for_author(author, analysis_private=analysis_private)
     logging.info(f'Analysis Result:\n{df}')
@@ -136,7 +138,14 @@ def run(author: str, repository: Optional[str] = None, analysis_private: bool = 
             path_in_repo='.',
             local_directory=td,
             message=f'Upload storage analysis of {author!r}',
+            clear=True,
         )
+        if not hf_client.repo_info(repo_id=repository, repo_type='dataset').private:
+            hf_client.super_squash_history(
+                repo_id=repository,
+                repo_type='dataset',
+                commit_message='Squash due to public repo to avoid information leaking'
+            )
 
 
 if __name__ == '__main__':
