@@ -100,7 +100,7 @@ def run(author: str, repository: Optional[str] = None, analysis_private: bool = 
                     print(f'', file=f)
                 else:
                     private_plot_file = os.path.join(td, 'plot_private.png')
-                    plot_with_data(df, private=False)
+                    plot_with_data(df, private=True)
                     plt.savefig(private_plot_file)
                     print(
                         f'![private repos]({hf_hub_url(repo_id=repository, repo_type="dataset", filename=os.path.relpath(private_plot_file, td))})',
