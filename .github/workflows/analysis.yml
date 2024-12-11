@@ -103,4 +103,4 @@ jobs:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         shell: bash
         run: |
-          python -m analysis.run -a ${{ github.event.inputs.author }}
+          python -m analysis.run -a ${{ github.event.inputs.author }} --private
