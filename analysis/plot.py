@@ -5,6 +5,8 @@ from matplotlib import pyplot as plt
 
 
 def plot_with_data(df: pd.DataFrame, private: bool = False, percentage: float = 0.98):
+    plt.cla()
+    plt.clf()
     if private:
         df = df[df['private']]
     else:
