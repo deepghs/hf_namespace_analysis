@@ -10,7 +10,7 @@ on:
         default: 'deepghs'
 
 jobs:
-  analysis repos:
+  analysis_repos:
     name: Analysis Repos
     runs-on: ${{ matrix.os }}
     strategy:
