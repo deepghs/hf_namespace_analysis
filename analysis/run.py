@@ -5,6 +5,7 @@ from typing import Optional
 import click
 import matplotlib.pyplot as plt
 from hbutils.scale import size_to_bytes_str
+from hbutils.string import plural_word
 from hbutils.system import TemporaryDirectory
 from hfutils.operate import get_hf_client, upload_directory_as_directory
 from hfutils.repository import hf_hub_repo_url
@@ -82,6 +83,12 @@ def run(author: str, repository: Optional[str] = None, analysis_private: bool = 
                         ]
                         print(f'### {repo_type.capitalize()} (Public)', file=f)
                         print(f'', file=f)
+                        print(f'{plural_word(len(df_type), f"public {repo_type} repository")} in total, '
+                              f'only the biggest {len(df_type_shown)} of them are listed here.', file=f)
+                        print(f'', file=f)
+                        print(f'Total storage cost of these repositories: '
+                              f'{size_to_bytes_str(int(df_type["total_size"].sum()), sigfigs=3, system="si")}', file=f)
+                        print(f'', file=f)
                         print(df_type_shown.to_markdown(index=False), file=f)
                         print(f'', file=f)
 
@@ -112,6 +119,13 @@ def run(author: str, repository: Optional[str] = None, analysis_private: bool = 
                             ]
                             print(df_type_shown)
                             print(f'### {repo_type.capitalize()} (Private)', file=f)
+                            print(f'', file=f)
+                            print(f'{plural_word(len(df_type), f"private {repo_type} repository")} in total, '
+                                  f'only the biggest {len(df_type_shown)} of them are listed here.', file=f)
+                            print(f'', file=f)
+                            print(f'Total storage cost of these repositories: '
+                                  f'{size_to_bytes_str(int(df_type["total_size"].sum()), sigfigs=3, system="si")}',
+                                  file=f)
                             print(f'', file=f)
                             print(df_type_shown.to_markdown(index=False), file=f)
                             print(f'', file=f)
