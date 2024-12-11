@@ -1,0 +1,7 @@
+tqdm
+hfutils>=0.7.0
+pandas
+tabulate
+matplotlib
+click>=8.0.0
+pyarrow
