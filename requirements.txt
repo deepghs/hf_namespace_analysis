@@ -1,5 +1,5 @@
 tqdm
-hfutils>=0.7.0
+hfutils>=0.7.1
 pandas
 tabulate
 matplotlib
