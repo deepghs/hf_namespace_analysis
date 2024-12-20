@@ -77,7 +77,9 @@ def run(author: str, repository: Optional[str] = None, analysis_private: bool = 
                     df_type = df[~df['private'] & (df['repo_type'] == repo_type)]
                     if len(df_type) > 0:
                         df_type_shown = df_type[:50]
-                        df_type_shown['size'] = df_type_shown['total_size'].map(
+                        df_type_shown['total_size'] = df_type_shown['total_size'].map(
+                            lambda x: size_to_bytes_str(x, sigfigs=3, system="si"))
+                        df_type_shown['lfs_size'] = df_type_shown['lfs_size'].map(
                             lambda x: size_to_bytes_str(x, sigfigs=3, system="si"))
                         df_type_shown['link'] = [
                             f'[Link]({hf_hub_repo_url(repo_id=repo_id, repo_type=repo_type_)})'
@@ -89,7 +91,7 @@ def run(author: str, repository: Optional[str] = None, analysis_private: bool = 
                               f'only the biggest {len(df_type_shown)} of them are listed here.', file=f)
                         print(f'', file=f)
                         print(f'Total storage cost of these repositories: '
-                              f'{size_to_bytes_str(int(df_type["total_size"].sum()), sigfigs=3, system="si")}', file=f)
+                              f'{size_to_bytes_str(int(df_type["lfs_size"].sum()), sigfigs=3, system="si")}', file=f)
                         print(f'', file=f)
                         print(df_type_shown.to_markdown(index=False), file=f)
                         print(f'', file=f)
@@ -113,7 +115,9 @@ def run(author: str, repository: Optional[str] = None, analysis_private: bool = 
                         df_type = df[df['private'] & (df['repo_type'] == repo_type)]
                         if len(df_type) > 0:
                             df_type_shown = df_type[:50]
-                            df_type_shown['size'] = df_type_shown['total_size'].map(
+                            df_type_shown['total_size'] = df_type_shown['total_size'].map(
+                                lambda x: size_to_bytes_str(x, sigfigs=3, system="si"))
+                            df_type_shown['lfs_size'] = df_type_shown['lfs_size'].map(
                                 lambda x: size_to_bytes_str(x, sigfigs=3, system="si"))
                             df_type_shown['link'] = [
                                 f'[Link]({hf_hub_repo_url(repo_id=repo_id, repo_type=repo_type_)})'
@@ -126,7 +130,7 @@ def run(author: str, repository: Optional[str] = None, analysis_private: bool = 
                                   f'only the biggest {len(df_type_shown)} of them are listed here.', file=f)
                             print(f'', file=f)
                             print(f'Total storage cost of these repositories: '
-                                  f'{size_to_bytes_str(int(df_type["total_size"].sum()), sigfigs=3, system="si")}',
+                                  f'{size_to_bytes_str(int(df_type["lfs_size"].sum()), sigfigs=3, system="si")}',
                                   file=f)
                             print(f'', file=f)
                             print(df_type_shown.to_markdown(index=False), file=f)
