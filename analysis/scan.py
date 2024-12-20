@@ -1,3 +1,5 @@
+from functools import partial
+
 import pandas as pd
 from hbutils.system import urlsplit
 from hfutils.operate import get_hf_client
@@ -9,7 +11,7 @@ from huggingface_hub.constants import ENDPOINT
 from huggingface_hub.utils import build_hf_headers, hf_raise_for_status
 from tqdm import tqdm
 
-configure_http_backend(get_requests_session)
+configure_http_backend(partial(get_requests_session, timeout=120))
 
 from typing import Optional
 
@@ -38,10 +40,10 @@ def analysis_repo(repo_id: str, repo_type: RepoTypeTyping = 'dataset'):
         repo_type=repo_type,
     )
     lfs_count, lfs_size = 0, 0
-    for item in hf_hub_iter_lfs_files(
+    for item in tqdm(hf_hub_iter_lfs_files(
             repo_id=repo_id,
             repo_type=repo_type,
-    ):
+    ), desc=f'Scanning {repo_type}s/{repo_id}'):
         lfs_count += 1
         lfs_size += item['size']
 
