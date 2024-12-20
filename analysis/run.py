@@ -1,5 +1,6 @@
 import logging
 import os.path
+from functools import partial
 from typing import Optional
 
 import click
@@ -29,7 +30,7 @@ CONTEXT_SETTINGS = dict(
 @click.option('--private', 'analysis_private', is_flag=True, type=bool, default=False,
               help='Analysis private repositories as well if possible', show_default=True)
 def run(author: str, repository: Optional[str] = None, analysis_private: bool = False):
-    configure_http_backend(get_requests_session)
+    configure_http_backend(partial(get_requests_session, timeout=120))
     logging.basicConfig(level=logging.INFO)
 
     hf_client = get_hf_client()
